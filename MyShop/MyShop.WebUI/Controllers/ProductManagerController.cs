@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using MyShop.Core.Contracts;
 using MyShop.Core.Models;
 using MyShop.Core.ViewModels;
 using MyShop.DataAccess.InMemory;
@@ -14,24 +15,35 @@ namespace MyShop.WebUI.Controllers
 
         //4. Create an instance of the product repository and initialize it
 
-        InMemoryRepository<Product> context;
-            //Before Generic: ProductRepository context;
+        IRepository<Product> context;
+        //before Interface: InMemoryRepository<Product> context;
+        //Before Generic: ProductRepository context;
 
         // 6. Load your productCategoryRepo
 
-        InMemoryRepository<ProductCategory> productCategories;
+        IRepository<ProductCategory> productCategories;
+        //before Interface:InMemoryRepository<ProductCategory> productCategories;
         //Before Generic: ProductCategoryRepository productCategories;
 
         //Constructor initializes our repository
-        public ProductManagerController()
+        public ProductManagerController(IRepository<Product> productContext, IRepository<ProductCategory> productCategoryContext)
         {
-            context = new InMemoryRepository<Product>();
-            //Before Generic: context = new ProductRepository();
-            //Initialize your product categories repo
-
-            //Before:productCategories = new ProductCategoryRepository();
-            productCategories = new InMemoryRepository<ProductCategory>();
+            context = productContext;
+            productCategories = productCategoryContext;
+            
         }
+
+        //before interfac: public ProductManagerController()
+        //{
+
+        //    context = new InMemoryRepository<Product>();
+        //    //Before Generic: context = new ProductRepository();
+
+        //    //Initialize your product categories repo
+
+        //    //Before:productCategories = new ProductCategoryRepository();
+        //    productCategories = new InMemoryRepository<ProductCategory>();
+        //}
 
         // GET: ProductManager
         public ActionResult Index()
