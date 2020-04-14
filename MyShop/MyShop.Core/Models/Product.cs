@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 namespace MyShop.Core.Models
 {
     //1. Add your Class with corresponding parameters
-    public class Product
+    public class Product : BaseEntity
     {
-        public string Id { get; set; }
+        //public string Id { get; set; }
         
         [StringLength(20)]
         [DisplayName("Product Name")]
@@ -23,10 +23,10 @@ namespace MyShop.Core.Models
         public string Category { get; set; }
         public string Image { get; set; }
 
-        public Product()
+        /*public Product()
         {
             this.Id = Guid.NewGuid().ToString(); //2. This constructor will create a guid automatically, this will provide control
-        }
+        }*/
 
     }
 }

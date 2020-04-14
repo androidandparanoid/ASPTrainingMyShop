@@ -12,12 +12,15 @@ namespace MyShop.WebUI.Controllers
     {
         //6. Create an instance of the productcategory repository and initialize it
 
-        ProductCategoryRepository context;
+        //before Generics: ProductCategoryRepository context;
+
+        InMemoryRepository<ProductCategory> context;
 
         //Constructor initializes our repository
         public ProductCategoryManagerController()
         {
-            context = new ProductCategoryRepository();
+            //before Generics: context = new ProductCategoryRepository();
+            context = new InMemoryRepository<ProductCategory>();
         }
 
         // GET: ProductCategoryManager
