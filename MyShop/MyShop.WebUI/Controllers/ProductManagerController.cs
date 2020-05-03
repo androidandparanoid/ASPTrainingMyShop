@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -78,8 +80,8 @@ namespace MyShop.WebUI.Controllers
 
             //the second will Create the product
 
-        [HttpPost]
-        public ActionResult Create(Product product)
+        [HttpPost] //7.a add your file as en entry in create
+        public ActionResult Create(Product product, HttpPostedFileBase file)
         {
             if (!ModelState.IsValid)
             {
@@ -88,6 +90,12 @@ namespace MyShop.WebUI.Controllers
             }
             else
             {
+                //Add your create file action
+                if (file != null)
+                {
+                    product.Image = product.Id + Path.GetExtension(file.FileName);
+                    file.SaveAs(Server.MapPath("//Content//ProductImages//") + product.Image);
+                }
                 //else CREATE the product
                 context.Insert(product);
                 //Call the Commit Method
@@ -127,7 +135,7 @@ namespace MyShop.WebUI.Controllers
 
             //The Second will Edit the product out, you need to pass a product object
         [HttpPost]
-        public ActionResult Edit(Product product, string Id)
+        public ActionResult Edit(Product product, string Id, HttpPostedFileBase file)
         {
             //Load the product from the DB
             Product productToEdit = context.Find(Id);
@@ -139,16 +147,24 @@ namespace MyShop.WebUI.Controllers
             }
             else
             {
+               
                 //if found product will be checked for validity
                 if (!ModelState.IsValid)
                 {
                     return View(product);
                 }
 
+                //Add your create file action
+                if (file != null)
+                {
+                    productToEdit.Image = product.Id + Path.GetExtension(file.FileName);
+                    file.SaveAs(Server.MapPath("//Content//ProductImages//") + productToEdit.Image);
+                }
+
                 //Edit product properties
                 productToEdit.Category = product.Category;
                 productToEdit.Description = product.Description;
-                productToEdit.Image = product.Image;
+                //productToEdit.Image = product.Image;
                 productToEdit.Name = product.Name;
                 productToEdit.Price = product.Price;
 
