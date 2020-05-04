@@ -1,5 +1,6 @@
 ﻿using MyShop.Core.Contracts;
 using MyShop.Core.Models;
+using MyShop.Core.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,10 +22,37 @@ namespace MyShop.WebUI.Controllers
             productCategories = productCategoryContext;
 
         }
-        public ActionResult Index()
+
+        //string category = null will allow to pass on a category or a null value
+        public ActionResult Index( string Category = null)
         {
-            List<Product> products = context.Collection().ToList();
-            return View(products);
+            //Before category param:
+            //List<Product> products = context.Collection().ToList();
+            //return View(products);
+            List<Product> products;
+            List<ProductCategory> categories = productCategories.Collection().ToList();
+            
+            if(Category == null)
+            {
+                //if category is null return all
+                products = context.Collection().ToList();
+            }
+            else
+            {
+                //if category is not null return a filtered list, since it is an Iqueryable you can filter
+                products = context.Collection().Where(p => p.Category == Category).ToList();
+                //This will convert to a sql query string that filters the information out
+
+            }
+
+            //7. Add your viewmodel
+
+            ProductListViewModel model = new ProductListViewModel();
+
+            model.Products = products;
+            model.ProductCategories = categories;
+
+            return View(model);
         }
 
         //3. Add your Details page
